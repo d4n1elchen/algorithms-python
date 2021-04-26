@@ -12,6 +12,7 @@ class Graph:
         self.N = N
         self.M = M
         self.directed = directed
+        self.symbol = []
 
         for i in range(N):
             self.adj[i][i] = 0
@@ -32,6 +33,12 @@ class Graph:
             self.adj[u][v] = self.adj[v][u] = cost
         else:
             self.adj[u][v]
+    
+    def set_symbol(self, symbol):
+        self.symbol = symbol
+    
+    def get_symbol(self, idx = None):
+        return '-' if idx == -1 else self.symbol[idx] if idx is not None else self.symbol
 
 
 """
@@ -43,9 +50,13 @@ Input format:
 def read_graph_adj_table(path):
     with open(path, 'r') as f:
         lines = f.readlines()
-        N, M, directed = parse_line_int(lines.pop(0))
+        N, M, directed, symbol = parse_line_int(lines.pop(0))
 
         g = Graph(N, M, directed)
+
+        if symbol:
+            node_symbol = list(parse_line_str(lines.pop(0)))
+            g.set_symbol(node_symbol)
 
         for line in lines:
             u, v, cost = parse_line_int(line)
